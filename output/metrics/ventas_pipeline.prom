@@ -1,7 +1,7 @@
 # TYPE ventas_pipeline_last_success_timestamp gauge
-ventas_pipeline_last_success_timestamp{job="ventas_pipeline"} 1783305262.4680479
+ventas_pipeline_last_success_timestamp{job="ventas_pipeline"} 1783305498.3304126
 # TYPE ventas_pipeline_duration_seconds gauge
-ventas_pipeline_duration_seconds{job="ventas_pipeline"} 0.016
+ventas_pipeline_duration_seconds{job="ventas_pipeline"} 0.015
 # TYPE ventas_pipeline_rows_in gauge
 ventas_pipeline_rows_in{job="ventas_pipeline"} 1000
 # TYPE ventas_pipeline_rows_out gauge

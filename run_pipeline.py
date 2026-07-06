@@ -19,6 +19,13 @@ import time
 from pathlib import Path
 
 from jobs.common import PROJECT_ROOT, get_logger, load_config, resolve
+from jobs.ingest import ingest
+from jobs.load import load
+from jobs.metrics import emit
+from jobs.transform import transform
+from jobs.validate import validate
+
+log = get_logger("run_pipeline")
 
 
 def _rel(path) -> str:
@@ -27,13 +34,6 @@ def _rel(path) -> str:
         return str(Path(path).resolve().relative_to(PROJECT_ROOT)).replace("\\", "/")
     except ValueError:
         return str(path)
-from jobs.ingest import ingest
-from jobs.load import load
-from jobs.metrics import emit
-from jobs.transform import transform
-from jobs.validate import validate
-
-log = get_logger("run_pipeline")
 
 
 def run(input_path: str | None = None) -> dict:

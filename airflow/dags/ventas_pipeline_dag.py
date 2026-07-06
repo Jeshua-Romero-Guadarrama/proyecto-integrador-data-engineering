@@ -16,9 +16,10 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
+
+from airflow import DAG
 
 # El proyecto se monta en esta ruta dentro del contenedor de Airflow.
 PROJECT_DIR = Path("/opt/airflow/project")
@@ -34,8 +35,9 @@ default_args = {
 
 
 def _generar_datos(**_):
-    from scripts.generate_data import generar
     import csv
+
+    from scripts.generate_data import generar
 
     filas = generar(rows=1000, seed=42)
     out = PROJECT_DIR / "data" / "ventas.csv"
