@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_ventas
+    description: "Ventas crudas normalizadas (una fila por línea de venta)."
+    columns:
+      - name: fecha
+        description: "Fecha de la venta."
+        data_tests: [not_null]
+      - name: producto_id
+        description: "Identificador del producto."
+        data_tests: [not_null]
+      - name: cantidad
+        description: "Unidades vendidas (debe ser > 0)."
+        data_tests:
+          - not_null
+          - positivo  # test genérico propio definido en tests/generic/positivo.sql
+      - name: precio_unitario
+        description: "Precio unitario (debe ser > 0)."
+        data_tests:
+          - not_null
+          - positivo
+      - name: ingreso_linea
+        description: "cantidad * precio_unitario."
+        data_tests: [not_null]

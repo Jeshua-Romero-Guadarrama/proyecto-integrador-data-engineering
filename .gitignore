@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# dbt
+dbt/ventas/target/
+dbt/ventas/dbt_packages/
+dbt/ventas/logs/
+*.duckdb
+*.duckdb.wal
+dbt/ventas/.user.yml
+
+# Spark
+output/spark_parquet/
+metastore_db/
+derby.log
+spark-warehouse/
+
+# Salidas generadas por el pipeline (se regeneran con run_pipeline.py).
+# Se versionan a modo de evidencia; descomentar para excluirlas.
+# output/
+
+# SO / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

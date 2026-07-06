@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fct_ingresos
+    description: "Ingreso total por fecha y producto (output analítico final)."
+    columns:
+      - name: fecha
+        description: "Fecha de la venta."
+        data_tests: [not_null]
+      - name: producto_id
+        description: "Identificador del producto."
+        data_tests: [not_null]
+      - name: unidades_vendidas
+        description: "Total de unidades vendidas en esa fecha/producto."
+        data_tests: [not_null, positivo]
+      - name: ingreso_total
+        description: "Suma de cantidad * precio_unitario."
+        data_tests: [not_null, positivo]
+    # La unicidad del par (fecha, producto_id) se valida con el test singular
+    # tests/assert_grilla_unica.sql

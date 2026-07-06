@@ -1,0 +1,22 @@
+name: "ventas"
+version: "1.0.0"
+config-version: 2
+
+profile: "ventas"
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Ruta al CSV de entrada, relativa a dbt/ventas. Se puede sobreescribir con:
+#   dbt build --vars '{ruta_ventas: /opt/airflow/project/data/ventas.csv}'
+vars:
+  ruta_ventas: "../../data/ventas.csv"
+
+models:
+  ventas:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

@@ -1,0 +1,60 @@
+name: CI Pipeline de Ventas
+
+# Se dispara en cada push y pull request sobre main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Configurar Java (para PySpark)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Lint (ruff)
+        run: pip install ruff && ruff check .
+        continue-on-error: true  # el lint informa pero no bloquea la entrega educativa
+
+      - name: Generar dataset de ejemplo
+        run: python scripts/generate_data.py --rows 1000
+
+      - name: Ejecutar tests (pytest)
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: pytest -v
+
+      - name: Ejecutar pipeline end-to-end
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python run_pipeline.py
+
+      - name: Validar transformaciones con dbt
+        working-directory: dbt/ventas
+        run: dbt build --profiles-dir .
+
+      - name: Publicar artefactos (output + evidencia)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-output
+          path: |
+            output/
+            docs/evidence/
+          if-no-files-found: warn

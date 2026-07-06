@@ -1,0 +1,30 @@
+# Configuración central del pipeline de ventas.
+# Todos los módulos leen sus rutas y parámetros desde aquí para evitar
+# valores "hardcodeados" y facilitar cambios de entorno (local / CI / docker).
+
+paths:
+  input_csv: "data/ventas.csv"
+  output_parquet: "output/ingresos_por_producto_fecha.parquet"
+  output_csv: "output/ingresos_por_producto_fecha.csv"
+  metrics_dir: "output/metrics"
+  evidence_dir: "docs/evidence"
+
+schema:
+  # Columnas esperadas en el archivo de entrada y su tipo lógico.
+  fecha: "date"
+  producto_id: "int"
+  cantidad: "int"
+  precio_unitario: "float"
+
+validation:
+  # Reglas de calidad de datos aplicadas antes de persistir el resultado.
+  columnas_requeridas: ["fecha", "producto_id", "cantidad", "precio_unitario"]
+  no_nulos: ["fecha", "producto_id", "cantidad", "precio_unitario"]
+  positivos: ["cantidad", "precio_unitario"]  # deben ser > 0
+  min_filas: 1
+
+observability:
+  # Formato Prometheus textfile (compatible con node_exporter textfile collector)
+  # y push opcional a Pushgateway si PUSHGATEWAY_URL está definido en el entorno.
+  job_name: "ventas_pipeline"
+  pushgateway_url_env: "PUSHGATEWAY_URL"

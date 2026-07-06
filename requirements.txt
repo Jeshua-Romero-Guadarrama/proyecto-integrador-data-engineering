@@ -1,0 +1,16 @@
+# Dependencias del pipeline (núcleo runnable en cualquier entorno).
+pandas>=2.1
+pyarrow>=14.0
+pyyaml>=6.0
+prometheus-client>=0.19
+
+# Testing
+pytest>=7.4
+
+# Procesamiento distribuido (opcional; requiere Java 11+)
+pyspark>=3.5
+
+# Transformaciones SQL (opcional; adapter liviano sin base externa)
+dbt-core>=1.7
+dbt-duckdb>=1.7
+duckdb>=0.10

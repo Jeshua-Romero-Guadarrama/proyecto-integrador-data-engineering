@@ -1,0 +1,44 @@
+﻿02:28:37  Running with dbt=1.11.12
+02:28:37  Registered adapter: duckdb=1.10.1
+02:28:38  Found 2 models, 14 data tests, 486 macros
+02:28:38  
+02:28:38  Concurrency: 4 threads (target='dev')
+02:28:38  
+02:28:38  1 of 16 START sql view model main.stg_ventas ................................... [RUN]
+02:28:38  1 of 16 OK created sql view model main.stg_ventas .............................. [OK in 0.12s]
+02:28:38  2 of 16 START test not_null_stg_ventas_cantidad ................................ [RUN]
+02:28:38  3 of 16 START test not_null_stg_ventas_fecha ................................... [RUN]
+02:28:38  4 of 16 START test not_null_stg_ventas_ingreso_linea ........................... [RUN]
+02:28:38  5 of 16 START test not_null_stg_ventas_precio_unitario ......................... [RUN]
+02:28:38  2 of 16 PASS not_null_stg_ventas_cantidad ...................................... [PASS in 0.12s]
+02:28:38  3 of 16 PASS not_null_stg_ventas_fecha ......................................... [PASS in 0.12s]
+02:28:38  4 of 16 PASS not_null_stg_ventas_ingreso_linea ................................. [PASS in 0.12s]
+02:28:38  5 of 16 PASS not_null_stg_ventas_precio_unitario ............................... [PASS in 0.12s]
+02:28:38  6 of 16 START test not_null_stg_ventas_producto_id ............................. [RUN]
+02:28:38  7 of 16 START test positivo_stg_ventas_cantidad ................................ [RUN]
+02:28:38  8 of 16 START test positivo_stg_ventas_precio_unitario ......................... [RUN]
+02:28:38  6 of 16 PASS not_null_stg_ventas_producto_id ................................... [PASS in 0.14s]
+02:28:38  7 of 16 PASS positivo_stg_ventas_cantidad ...................................... [PASS in 0.14s]
+02:28:38  8 of 16 PASS positivo_stg_ventas_precio_unitario ............................... [PASS in 0.14s]
+02:28:38  9 of 16 START sql table model main.fct_ingresos ................................ [RUN]
+02:28:39  9 of 16 OK created sql table model main.fct_ingresos ........................... [OK in 0.40s]
+02:28:39  10 of 16 START test assert_grilla_unica ........................................ [RUN]
+02:28:39  11 of 16 START test not_null_fct_ingresos_fecha ................................ [RUN]
+02:28:39  12 of 16 START test not_null_fct_ingresos_ingreso_total ........................ [RUN]
+02:28:39  13 of 16 START test not_null_fct_ingresos_producto_id .......................... [RUN]
+02:28:39  10 of 16 PASS assert_grilla_unica .............................................. [PASS in 0.05s]
+02:28:39  11 of 16 PASS not_null_fct_ingresos_fecha ...................................... [PASS in 0.05s]
+02:28:39  12 of 16 PASS not_null_fct_ingresos_ingreso_total .............................. [PASS in 0.05s]
+02:28:39  13 of 16 PASS not_null_fct_ingresos_producto_id ................................ [PASS in 0.05s]
+02:28:39  14 of 16 START test not_null_fct_ingresos_unidades_vendidas .................... [RUN]
+02:28:39  15 of 16 START test positivo_fct_ingresos_ingreso_total ........................ [RUN]
+02:28:39  16 of 16 START test positivo_fct_ingresos_unidades_vendidas .................... [RUN]
+02:28:39  14 of 16 PASS not_null_fct_ingresos_unidades_vendidas .......................... [PASS in 0.03s]
+02:28:39  15 of 16 PASS positivo_fct_ingresos_ingreso_total .............................. [PASS in 0.02s]
+02:28:39  16 of 16 PASS positivo_fct_ingresos_unidades_vendidas .......................... [PASS in 0.02s]
+02:28:39  
+02:28:39  Finished running 1 table model, 14 data tests, 1 view model in 0 hours 0 minutes and 1.00 seconds (1.00s).
+02:28:39  
+02:28:39  Completed successfully
+02:28:39  
+02:28:39  Done. PASS=16 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=16

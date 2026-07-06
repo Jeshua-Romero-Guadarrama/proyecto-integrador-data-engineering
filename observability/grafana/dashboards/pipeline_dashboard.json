@@ -1,0 +1,53 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "title": "Pipeline de Ventas — Observabilidad",
+  "tags": ["dataeng", "ventas"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Última corrida exitosa",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "fieldConfig": { "defaults": { "unit": "dateTimeFromNow" } },
+      "targets": [
+        { "expr": "ventas_pipeline_last_success_timestamp * 1000", "refId": "A" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Duración (s)",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "targets": [{ "expr": "ventas_pipeline_duration_seconds", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "Ingreso total procesado",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "fieldConfig": { "defaults": { "unit": "currencyUSD" } },
+      "targets": [{ "expr": "ventas_pipeline_ingreso_total", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "Checks de calidad (pass/fail)",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
+      "targets": [
+        { "expr": "ventas_pipeline_checks_passed", "refId": "A", "legendFormat": "passed" },
+        { "expr": "ventas_pipeline_checks_failed", "refId": "B", "legendFormat": "failed" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Filas de entrada vs salida",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
+      "targets": [
+        { "expr": "ventas_pipeline_rows_in", "refId": "A", "legendFormat": "rows_in" },
+        { "expr": "ventas_pipeline_rows_out", "refId": "B", "legendFormat": "rows_out" }
+      ]
+    }
+  ]
+}

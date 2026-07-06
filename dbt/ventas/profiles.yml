@@ -1,0 +1,9 @@
+# Perfil dbt con adapter DuckDB (embebido, sin base de datos externa).
+# La base vive en un archivo local ventas.duckdb dentro de dbt/ventas.
+ventas:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "ventas.duckdb"
+      threads: 4
