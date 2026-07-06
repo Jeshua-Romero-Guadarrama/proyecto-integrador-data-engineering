@@ -3,8 +3,8 @@
 Flujo:
     generar_datos >> ingesta_y_validacion >> transformacion_y_carga >> dbt_build >> reporte
 
-Cada etapa reutiliza los mismos módulos de jobs/ (no duplico lógica). El
-proyecto se monta en /opt/airflow/project dentro del contenedor de Airflow.
+Cada etapa reutiliza los mismos módulos de jobs/ (no duplico lógica).
+El proyecto se monta en /opt/airflow/project dentro del contenedor de Airflow.
 
 Programación: diaria (@daily), con catchup=False para no reprocesar históricos.
 """
@@ -33,6 +33,7 @@ argumentos_por_defecto = {
 
 
 def _generar_datos(**_):
+    """Tarea: genera el CSV de ventas dentro del contenedor de Airflow."""
     import csv
 
     from scripts.generar_datos import generar
@@ -50,6 +51,7 @@ def _generar_datos(**_):
 
 
 def _ingesta_y_validacion(**_):
+    """Tarea: ingiere el CSV y corre las validaciones de calidad (corta si fallan)."""
     from jobs.ingesta import ingerir
     from jobs.validacion import validar
 
@@ -59,6 +61,7 @@ def _ingesta_y_validacion(**_):
 
 
 def _transformacion_y_carga(**_):
+    """Tarea: corre el pipeline completo (transforma y guarda el resultado)."""
     from ejecutar_pipeline import ejecutar
 
     resumen = ejecutar()

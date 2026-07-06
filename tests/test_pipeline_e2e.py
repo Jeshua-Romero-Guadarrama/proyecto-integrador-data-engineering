@@ -7,6 +7,7 @@ from ejecutar_pipeline import ejecutar
 
 
 def test_pipeline_completo_genera_output():
+    """El pipeline completo termina OK y deja el Parquet escrito y no vacío."""
     resumen = ejecutar()
     assert resumen["estado"] == "exito"
     assert resumen["filas_entrada"] > 0

@@ -28,12 +28,15 @@ class ReporteValidacion:
 
     @property
     def ok(self) -> bool:
+        """True solo si pasaron todos los chequeos."""
         return all(c["ok"] for c in self.chequeos)
 
     def agregar(self, nombre: str, paso: bool, detalle: str = "") -> None:
+        """Suma el resultado de un chequeo al reporte."""
         self.chequeos.append({"chequeo": nombre, "ok": paso, "detalle": detalle})
 
     def como_dict(self) -> dict:
+        """Devuelve el reporte como diccionario, listo para loguear o serializar."""
         return {
             "ok": self.ok,
             "total": len(self.chequeos),

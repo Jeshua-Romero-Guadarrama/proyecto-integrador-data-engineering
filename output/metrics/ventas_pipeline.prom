@@ -1,7 +1,7 @@
 # TYPE ventas_pipeline_ultimo_exito_timestamp gauge
-ventas_pipeline_ultimo_exito_timestamp{job="ventas_pipeline"} 1783306839.1410887
+ventas_pipeline_ultimo_exito_timestamp{job="ventas_pipeline"} 1783307572.2496274
 # TYPE ventas_pipeline_duracion_segundos gauge
-ventas_pipeline_duracion_segundos{job="ventas_pipeline"} 0.016
+ventas_pipeline_duracion_segundos{job="ventas_pipeline"} 0.015
 # TYPE ventas_pipeline_filas_entrada gauge
 ventas_pipeline_filas_entrada{job="ventas_pipeline"} 1000
 # TYPE ventas_pipeline_filas_salida gauge

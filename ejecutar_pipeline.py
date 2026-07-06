@@ -94,6 +94,7 @@ def ejecutar(ruta_entrada: str | None = None) -> dict:
 
 
 def main() -> int:
+    """Punto de entrada de la CLI: parsea argumentos y devuelve el código de salida."""
     parser = argparse.ArgumentParser(description="Pipeline de ventas de punta a punta")
     parser.add_argument("--entrada", default=None, help="Ruta al CSV de entrada")
     args = parser.parse_args()

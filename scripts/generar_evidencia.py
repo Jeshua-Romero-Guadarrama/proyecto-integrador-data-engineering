@@ -11,6 +11,7 @@ SALIDA = RAIZ / "docs" / "evidence" / "05_output_preview.md"
 
 
 def main() -> None:
+    """Lee el Parquet final y arma el Markdown de evidencia con esquema y muestra."""
     tabla = pq.read_table(PARQUET)
     datos = tabla.to_pandas()
 

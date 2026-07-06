@@ -8,10 +8,12 @@ from jobs.ingesta import ErrorEsquema, ingerir
 
 
 def _escribir_csv(ruta, contenido: str) -> None:
+    """Helper: escribe un CSV temporal para los tests."""
     ruta.write_text(contenido, encoding="utf-8")
 
 
 def test_ingesta_lee_csv_valido(tmp_path):
+    """Un CSV bien formado se lee con las columnas y tipos esperados."""
     csv = tmp_path / "ventas.csv"
     _escribir_csv(
         csv,
@@ -26,11 +28,13 @@ def test_ingesta_lee_csv_valido(tmp_path):
 
 
 def test_archivo_inexistente_lanza_error(tmp_path):
+    """Si el archivo no existe, la ingesta corta con FileNotFoundError."""
     with pytest.raises(FileNotFoundError):
         ingerir(tmp_path / "no_existe.csv")
 
 
 def test_columna_faltante_lanza_error_esquema(tmp_path):
+    """Si falta una columna obligatoria, la ingesta lanza ErrorEsquema."""
     csv = tmp_path / "malo.csv"
     _escribir_csv(csv, "fecha,producto_id,cantidad\n2023-01-01,101,2\n")
     with pytest.raises(ErrorEsquema):

@@ -61,6 +61,7 @@ def generar(filas: int, semilla: int = 42) -> list[dict]:
 
 
 def main() -> None:
+    """Lee los argumentos de la CLI, genera las ventas y las escribe al CSV."""
     parser = argparse.ArgumentParser(description="Genera datos de ventas de ejemplo")
     parser.add_argument("--filas", type=int, default=1000, help="Cantidad de filas")
     parser.add_argument("--salida", type=str, default="data/ventas.csv", help="Ruta de salida")

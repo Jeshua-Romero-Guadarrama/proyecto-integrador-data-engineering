@@ -70,6 +70,7 @@ def ejecutar(ruta_entrada: str, ruta_salida: str) -> None:
 
 
 def main() -> None:
+    """Lee los argumentos de la CLI y dispara el job de Spark."""
     parser = argparse.ArgumentParser(description="Job PySpark de agregación de ventas")
     parser.add_argument("--entrada", default="data/ventas.csv")
     parser.add_argument("--salida", default="output/spark_parquet")
