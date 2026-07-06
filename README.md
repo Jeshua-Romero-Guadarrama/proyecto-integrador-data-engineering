@@ -47,10 +47,10 @@ Requisitos: Python 3.10+ (y Java 11+ sólo si querés correr PySpark).
 pip install -r requirements.txt
 
 # 2. Generar el dataset de ejemplo (opcional: ya viene versionado)
-python scripts/generate_data.py --rows 1000
+python scripts/generar_datos.py --filas 1000
 
 # 3. Ejecutar el pipeline end-to-end
-python run_pipeline.py
+python ejecutar_pipeline.py
 
 # 4. Correr los tests
 pytest
@@ -59,7 +59,7 @@ pytest
 cd dbt/ventas && dbt build --profiles-dir .
 
 # 6. (Opcional) Job de procesamiento distribuido con PySpark
-python jobs/spark_job.py --input data/ventas.csv --output output/spark_parquet
+python jobs/job_spark.py --entrada data/ventas.csv --salida output/spark_parquet
 ```
 
 En Windows con PowerShell, definí primero `$env:PYTHONPATH = (Get-Location).Path`.
@@ -86,11 +86,11 @@ ingreso total global **342.413,79**, 8/8 checks de calidad OK.
 
 ```
 proyecto-integrador-dataeng/
-├── run_pipeline.py          # Orquestador principal (ingesta→validación→transform→carga→métricas)
+├── ejecutar_pipeline.py     # Orquestador principal (ingesta→validación→transformación→carga→métricas)
 ├── config/pipeline.yml      # Configuración central (rutas, esquema, reglas)
 ├── data/                    # Datos de entrada (ventas.csv)
 ├── output/                  # Resultados (Parquet, CSV, métricas)
-├── jobs/                    # Etapas del pipeline (ingest, transform, validate, load, metrics, spark_job)
+├── jobs/                    # Etapas del pipeline (ingesta, transformacion, validacion, carga, metricas, job_spark)
 ├── tests/                   # Pruebas automatizadas (pytest)
 ├── scripts/                 # Generador de datos y utilidades de evidencia
 ├── airflow/dags/            # DAG de orquestación

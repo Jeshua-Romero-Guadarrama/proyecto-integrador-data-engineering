@@ -45,10 +45,10 @@ desacopladas y una única fuente de configuración:
                                       │ (leído por todas las etapas)
                                       ▼
    data/ventas.csv ──► [1] INGESTA ──► [2] VALIDACIÓN ──► [3] TRANSFORMACIÓN ──► [4] CARGA ──► output/*.parquet
-      (fuente)          ingest.py       validate.py         transform.py          load.py       (+ CSV)
+      (fuente)          ingesta.py      validacion.py       transformacion.py     carga.py      (+ CSV)
                                           │ (fail-fast)                                │
                                           ▼                                            ▼
-                                   DataQualityError                        [5] MÉTRICAS (metrics.py)
+                                   ErrorCalidadDatos                       [5] MÉTRICAS (metricas.py)
                                    (corta el pipeline)                      output/metrics/*.prom
 
    Orquestación:   Airflow DAG  ──►  encadena las etapas + dbt (diario, con reintentos)
@@ -72,7 +72,7 @@ desacopladas y una única fuente de configuración:
 **Principio rector (del enunciado):** *no buscamos complejidad innecesaria*. Cada
 herramienta "avanzada" (Airflow, dbt, Spark, Prometheus) está presente porque
 mapea a un criterio de la rúbrica y aporta valor real, pero el **núcleo del
-pipeline funciona con un solo comando** (`python run_pipeline.py`) sin dependencias
+pipeline funciona con un solo comando** (`python ejecutar_pipeline.py`) sin dependencias
 de infraestructura.
 
 ---
@@ -153,7 +153,7 @@ read_csv_auto(data/ventas.csv)
 - `models/staging/stg_ventas.sql` — staging: castea tipos y calcula
   `ingreso_linea = cantidad * precio_unitario`.
 - `models/marts/fct_ingresos.sql` — tabla de hechos: ingreso total por
-  `(fecha, producto_id)`. **Equivale en SQL al output de `jobs/transform.py`**, lo
+  `(fecha, producto_id)`. **Equivale en SQL al output de `jobs/transformacion.py`**, lo
   que permite validación cruzada entre ambas implementaciones.
 
 **Tests definidos** (14 en total, todos declarativos):
@@ -171,7 +171,7 @@ Ejecución: `cd dbt/ventas && dbt build --profiles-dir .` →
 
 ## 5. Procesamiento distribuido (PySpark)
 
-Job: `jobs/spark_job.py`. Reimplementa la lógica de negocio con la API de
+Job: `jobs/job_spark.py`. Reimplementa la lógica de negocio con la API de
 DataFrames de Spark, ejecutable en `local[*]` (dev/CI) o en un clúster real
 cambiando `spark.master`.
 
@@ -194,13 +194,13 @@ particionada en un data lake (S3/HDFS/GCS), integración con Airflow vía
 pipeline pandas (validación cruzada). En Windows sin `winutils.exe` el committer de
 Hadoop no está disponible, por lo que el job **cae con elegancia** a una escritura
 `toPandas() → pyarrow` (mismo resultado); en Linux/Docker usa el writer nativo
-particionado. Ver `docs/evidence/04_spark_job.log`.
+particionado. Ver `docs/evidence/04_job_spark.log`.
 
 ---
 
 ## 6. Datos de ejemplo
 
-Fuente: `data/ventas.csv` (1.000 filas), generado por `scripts/generate_data.py`
+Fuente: `data/ventas.csv` (1.000 filas), generado por `scripts/generar_datos.py`
 con **semilla fija (42)** ⇒ reproducible.
 
 **Estructura:**
@@ -221,7 +221,7 @@ fecha,producto_id,cantidad,precio_unitario
 2023-01-01,104,3,33.11
 ```
 
-Se puede ajustar el volumen con `--rows N`. Los datos vienen versionados en el repo
+Se puede ajustar el volumen con `--filas N`. Los datos vienen versionados en el repo
 para que sea clonable y ejecutable sin pasos extra.
 
 ---
@@ -233,20 +233,20 @@ Framework: **pytest**. Suite en `tests/` (15 tests, todos en verde).
 **Estrategia de testing** (pirámide):
 
 - **Unitarias por etapa**:
-  - `test_ingest.py` — lectura OK, archivo inexistente, columna faltante, dataset real.
-  - `test_transform.py` — `ingreso_total` correcto, agregación por clave, conservación
+  - `test_ingesta.py` — lectura OK, archivo inexistente, columna faltante, dataset real.
+  - `test_transformacion.py` — `ingreso_total` correcto, agregación por clave, conservación
     del total, columnas de salida.
-  - `test_validate.py` — datos válidos pasan; negativos y nulos fallan; excepción con
-    `raise_on_error`; estructura del reporte.
-- **End-to-end**: `test_pipeline_e2e.py` — corre `run_pipeline.run()` y verifica
-  éxito, existencia del Parquet e invariante `rows_out <= rows_in`.
+  - `test_validacion.py` — datos válidos pasan; negativos y nulos fallan; excepción con
+    `lanzar_error`; estructura del reporte.
+- **End-to-end**: `test_pipeline_e2e.py` — corre `ejecutar_pipeline.ejecutar()` y verifica
+  éxito, existencia del Parquet e invariante `filas_salida <= filas_entrada`.
 - **Fixtures** (`conftest.py`): datasets sintéticos válidos, con negativos y con nulos.
 
 Ejemplo representativo (invariante de negocio):
 
 ```python
-def test_agregacion_suma_por_producto_y_fecha(ventas_validas):
-    resultado = transform(ventas_validas)
+def test_agregado_suma_por_producto_y_fecha(ventas_validas):
+    resultado = transformar(ventas_validas)
     fila = resultado[(resultado.fecha == date(2023,1,1)) &
                      (resultado.producto_id == 101)].iloc[0]
     assert fila["ingreso_total"] == 200.0     # (2*40) + (3*40)
@@ -269,7 +269,7 @@ Pipeline: `.github/workflows/ci.yml` (GitHub Actions), disparado en `push` y
 3. **Lint** (`ruff`) — informativo.
 4. **Generar** el dataset de ejemplo.
 5. **Tests** (`pytest -v`) — bloquea el merge si fallan.
-6. **Pipeline end-to-end** (`run_pipeline.py`).
+6. **Pipeline end-to-end** (`ejecutar_pipeline.py`).
 7. **dbt build** — modelos + tests SQL.
 8. **Publicar artefactos** (`output/` y `docs/evidence/`).
 
@@ -281,7 +281,7 @@ pipeline verde y reproducible.
 
 ## 9. Observabilidad
 
-**Instrumentación** (`jobs/metrics.py`): al terminar cada corrida se emiten métricas
+**Instrumentación** (`jobs/metricas.py`): al terminar cada corrida se emiten métricas
 en dos destinos:
 
 1. **Textfile** `output/metrics/ventas_pipeline.prom` (siempre; sin red).
@@ -291,20 +291,20 @@ en dos destinos:
 
 | Métrica | Significado |
 |---------|-------------|
-| `ventas_pipeline_last_success_timestamp` | Marca de tiempo de la última corrida OK |
-| `ventas_pipeline_duration_seconds` | Duración de la corrida |
-| `ventas_pipeline_rows_in` / `_rows_out` | Filas de entrada / salida |
+| `ventas_pipeline_ultimo_exito_timestamp` | Marca de tiempo de la última corrida OK |
+| `ventas_pipeline_duracion_segundos` | Duración de la corrida |
+| `ventas_pipeline_filas_entrada` / `_filas_salida` | Filas de entrada / salida |
 | `ventas_pipeline_ingreso_total` | Ingreso total procesado |
-| `ventas_pipeline_checks_passed` / `_failed` | Resultado de la validación de calidad |
+| `ventas_pipeline_chequeos_ok` / `_chequeos_fallidos` | Resultado de la validación de calidad |
 
 **Logs**: logging estructurado con nivel configurable (`LOG_LEVEL`), formato
-uniforme por etapa (`ingest`, `validate`, `transform`, `load`, `metrics`).
+uniforme por etapa (`ingesta`, `validacion`, `transformacion`, `carga`, `metricas`).
 
 **Dashboards**: Grafana con datasource Prometheus aprovisionado y dashboard
 "Pipeline de Ventas" (`observability/grafana/dashboards/pipeline_dashboard.json`):
 paneles de última corrida, duración, ingreso, checks pass/fail y filas in/out.
 
-**Diagnóstico**: `_checks_failed > 0` o ausencia de `last_success_timestamp`
+**Diagnóstico**: `_chequeos_fallidos > 0` o ausencia de `ultimo_exito_timestamp`
 recientes indican un problema; el runbook detalla la respuesta.
 
 ---
@@ -318,7 +318,7 @@ troubleshooting, mantenimiento y rollback.
 Resumen de operación diaria:
 
 ```bash
-python run_pipeline.py            # ejecutar
+python ejecutar_pipeline.py            # ejecutar
 cat docs/evidence/run_summary.json # verificar status=success y validation.ok=true
 ```
 
@@ -349,10 +349,10 @@ git clone <URL-del-repo> && cd proyecto-integrador-dataeng
 pip install -r requirements.txt
 
 # 3. (Opcional) regenerar datos
-python scripts/generate_data.py --rows 1000
+python scripts/generar_datos.py --filas 1000
 
 # 4. Ejecutar el pipeline  → observar el log de etapas y el resumen final
-python run_pipeline.py
+python ejecutar_pipeline.py
 
 # 5. Ver el output
 #    output/ingresos_por_producto_fecha.parquet  (principal)
@@ -376,10 +376,10 @@ Todas las corridas reales se capturan en `docs/evidence/`:
 
 | Archivo | Contenido |
 |---------|-----------|
-| `01_run_pipeline.log` | Log completo del pipeline end-to-end |
+| `01_ejecutar_pipeline.log` | Log completo del pipeline end-to-end |
 | `02_pytest.log` | 15 tests — **15 passed** |
 | `03_dbt_build.log` | dbt — **PASS=16 (2 modelos + 14 tests)** |
-| `04_spark_job.log` | Job PySpark — 426 filas agregadas |
+| `04_job_spark.log` | Job PySpark — 426 filas agregadas |
 | `05_output_preview.md` | Esquema Parquet + muestra + métricas de negocio |
 | `run_summary.json` | Resumen estructurado de la corrida |
 
@@ -401,7 +401,7 @@ Todas las corridas reales se capturan en `docs/evidence/`:
   pública clara y docstring explicativo.
 - **Type hints** y `from __future__ import annotations` en todo el código.
 - **Configuración externa** (YAML) en vez de valores hardcodeados.
-- **Errores de dominio explícitos**: `SchemaError`, `DataQualityError` (fallos
+- **Errores de dominio explícitos**: `ErrorEsquema`, `ErrorCalidadDatos` (fallos
   legibles y accionables).
 - **Logging** estructurado en lugar de `print`.
 - **Fail-fast**: validar antes de transformar.
@@ -412,28 +412,28 @@ Todas las corridas reales se capturan en `docs/evidence/`:
 Fragmento representativo (transformación — corazón del pipeline):
 
 ```python
-def add_ingreso_total(df: pd.DataFrame) -> pd.DataFrame:
-    """Agrega la columna calculada ingreso_total = cantidad * precio_unitario."""
-    out = df.copy()
-    out["ingreso_total"] = (out["cantidad"] * out["precio_unitario"]).round(2)
-    return out
+def agregar_ingreso_total(datos: pd.DataFrame) -> pd.DataFrame:
+    """Suma la columna ingreso_total = cantidad * precio_unitario."""
+    salida = datos.copy()
+    salida["ingreso_total"] = (salida["cantidad"] * salida["precio_unitario"]).round(2)
+    return salida
 
-def aggregate_por_producto_fecha(df: pd.DataFrame) -> pd.DataFrame:
-    """Agrupa por (fecha, producto_id) y suma ingreso_total."""
-    agg = (df.groupby(["fecha", "producto_id"], as_index=False)
-             .agg(unidades_vendidas=("cantidad", "sum"),
-                  ingreso_total=("ingreso_total", "sum"))
-             .sort_values(["fecha", "producto_id"]).reset_index(drop=True))
-    agg["ingreso_total"] = agg["ingreso_total"].round(2)
-    return agg
+def agrupar_por_producto_fecha(datos: pd.DataFrame) -> pd.DataFrame:
+    """Agrupa por (fecha, producto_id) y suma ingreso y unidades."""
+    agregado = (datos.groupby(["fecha", "producto_id"], as_index=False)
+                     .agg(unidades_vendidas=("cantidad", "sum"),
+                          ingreso_total=("ingreso_total", "sum"))
+                     .sort_values(["fecha", "producto_id"]).reset_index(drop=True))
+    agregado["ingreso_total"] = agregado["ingreso_total"].round(2)
+    return agregado
 ```
 
 Fragmento representativo (validación declarativa dirigida por configuración):
 
 ```python
-for col in cfg["positivos"]:              # reglas definidas en pipeline.yml
-    no_positivos = int((df[col] <= 0).sum())
-    report.add(f"positivos::{col}", no_positivos == 0, f"<=0 => {no_positivos}")
+for columna in reglas["positivos"]:          # reglas definidas en pipeline.yml
+    no_positivos = int((datos[columna] <= 0).sum())
+    reporte.agregar(f"positivos::{columna}", no_positivos == 0, f"<=0 => {no_positivos}")
 ```
 
 ---

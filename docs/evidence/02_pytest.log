@@ -6,20 +6,20 @@ configfile: pyproject.toml
 testpaths: tests
 collecting ... collected 15 items
 
-tests/test_ingest.py::test_ingesta_lee_csv_valido PASSED                 [  6%]
-tests/test_ingest.py::test_archivo_inexistente_lanza_error PASSED        [ 13%]
-tests/test_ingest.py::test_columna_faltante_lanza_schema_error PASSED    [ 20%]
-tests/test_ingest.py::test_dataset_real_de_ejemplo PASSED                [ 26%]
+tests/test_ingesta.py::test_ingesta_lee_csv_valido PASSED                [  6%]
+tests/test_ingesta.py::test_archivo_inexistente_lanza_error PASSED       [ 13%]
+tests/test_ingesta.py::test_columna_faltante_lanza_error_esquema PASSED  [ 20%]
+tests/test_ingesta.py::test_dataset_real_de_ejemplo PASSED               [ 26%]
 tests/test_pipeline_e2e.py::test_pipeline_completo_genera_output PASSED  [ 33%]
 tests/test_pipeline_e2e.py::test_output_es_consistente PASSED            [ 40%]
-tests/test_transform.py::test_ingreso_total_es_cantidad_por_precio PASSED [ 46%]
-tests/test_transform.py::test_agregacion_suma_por_producto_y_fecha PASSED [ 53%]
-tests/test_transform.py::test_ingreso_total_global_se_conserva PASSED    [ 60%]
-tests/test_transform.py::test_columnas_de_salida PASSED                  [ 66%]
-tests/test_validate.py::test_datos_validos_pasan PASSED                  [ 73%]
-tests/test_validate.py::test_cantidad_negativa_falla PASSED              [ 80%]
-tests/test_validate.py::test_valor_nulo_falla PASSED                     [ 86%]
-tests/test_validate.py::test_raise_on_error_lanza_excepcion PASSED       [ 93%]
-tests/test_validate.py::test_reporte_estructura PASSED                   [100%]
+tests/test_transformacion.py::test_ingreso_total_es_cantidad_por_precio PASSED [ 46%]
+tests/test_transformacion.py::test_agregado_suma_por_producto_y_fecha PASSED [ 53%]
+tests/test_transformacion.py::test_el_ingreso_global_no_cambia_al_agrupar PASSED [ 60%]
+tests/test_transformacion.py::test_columnas_de_salida PASSED             [ 66%]
+tests/test_validacion.py::test_datos_validos_pasan PASSED                [ 73%]
+tests/test_validacion.py::test_cantidad_negativa_falla PASSED            [ 80%]
+tests/test_validacion.py::test_valor_nulo_falla PASSED                   [ 86%]
+tests/test_validacion.py::test_lanzar_error_tira_excepcion PASSED        [ 93%]
+tests/test_validacion.py::test_estructura_del_reporte PASSED             [100%]
 
-============================= 15 passed in 0.15s ==============================
+============================= 15 passed in 0.16s ==============================

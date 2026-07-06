@@ -14,7 +14,7 @@
       "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
       "fieldConfig": { "defaults": { "unit": "dateTimeFromNow" } },
       "targets": [
-        { "expr": "ventas_pipeline_last_success_timestamp * 1000", "refId": "A" }
+        { "expr": "ventas_pipeline_ultimo_exito_timestamp * 1000", "refId": "A" }
       ]
     },
     {
@@ -22,7 +22,7 @@
       "title": "Duración (s)",
       "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
       "fieldConfig": { "defaults": { "unit": "s" } },
-      "targets": [{ "expr": "ventas_pipeline_duration_seconds", "refId": "A" }]
+      "targets": [{ "expr": "ventas_pipeline_duracion_segundos", "refId": "A" }]
     },
     {
       "type": "stat",
@@ -33,11 +33,11 @@
     },
     {
       "type": "stat",
-      "title": "Checks de calidad (pass/fail)",
+      "title": "Chequeos de calidad (ok/fallidos)",
       "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
       "targets": [
-        { "expr": "ventas_pipeline_checks_passed", "refId": "A", "legendFormat": "passed" },
-        { "expr": "ventas_pipeline_checks_failed", "refId": "B", "legendFormat": "failed" }
+        { "expr": "ventas_pipeline_chequeos_ok", "refId": "A", "legendFormat": "ok" },
+        { "expr": "ventas_pipeline_chequeos_fallidos", "refId": "B", "legendFormat": "fallidos" }
       ]
     },
     {
@@ -45,8 +45,8 @@
       "title": "Filas de entrada vs salida",
       "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
       "targets": [
-        { "expr": "ventas_pipeline_rows_in", "refId": "A", "legendFormat": "rows_in" },
-        { "expr": "ventas_pipeline_rows_out", "refId": "B", "legendFormat": "rows_out" }
+        { "expr": "ventas_pipeline_filas_entrada", "refId": "A", "legendFormat": "filas_entrada" },
+        { "expr": "ventas_pipeline_filas_salida", "refId": "B", "legendFormat": "filas_salida" }
       ]
     }
   ]

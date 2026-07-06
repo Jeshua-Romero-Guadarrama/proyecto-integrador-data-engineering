@@ -1,0 +1,18 @@
+﻿2026-07-05 21:00:38 | INFO    | ejecutar_pipeline | === INICIO pipeline de ventas ===
+2026-07-05 21:00:38 | INFO    | ingesta | Leyendo archivo de entrada: D:\Computadora Huawei\Acad�mico\CoderHouse\DataEngineering\proyecto-integrador-dataeng\data\ventas.csv
+2026-07-05 21:00:38 | INFO    | ingesta | Ingesta lista: 1000 filas, 4 columnas
+2026-07-05 21:00:38 | INFO    | validacion | chequeo columnas_requeridas      OK (todas presentes)
+2026-07-05 21:00:38 | INFO    | validacion | chequeo min_filas                OK (filas=1000 (min=1))
+2026-07-05 21:00:38 | INFO    | validacion | chequeo no_nulos::fecha          OK (nulos=0)
+2026-07-05 21:00:38 | INFO    | validacion | chequeo no_nulos::producto_id    OK (nulos=0)
+2026-07-05 21:00:38 | INFO    | validacion | chequeo no_nulos::cantidad       OK (nulos=0)
+2026-07-05 21:00:38 | INFO    | validacion | chequeo no_nulos::precio_unitario OK (nulos=0)
+2026-07-05 21:00:38 | INFO    | validacion | chequeo positivos::cantidad      OK (<=0 => 0)
+2026-07-05 21:00:38 | INFO    | validacion | chequeo positivos::precio_unitario OK (<=0 => 0)
+2026-07-05 21:00:38 | INFO    | transformacion | Transformando 1000 filas de entrada
+2026-07-05 21:00:38 | INFO    | transformacion | Transformaci�n lista: 426 filas agregadas (ingreso total global=342413.79)
+2026-07-05 21:00:38 | INFO    | carga | Resultado guardado en Parquet: D:\Computadora Huawei\Acad�mico\CoderHouse\DataEngineering\proyecto-integrador-dataeng\output\ingresos_por_producto_fecha.parquet (426 filas)
+2026-07-05 21:00:38 | INFO    | carga | Copia en CSV guardada en: D:\Computadora Huawei\Acad�mico\CoderHouse\DataEngineering\proyecto-integrador-dataeng\output\ingresos_por_producto_fecha.csv
+2026-07-05 21:00:38 | INFO    | metricas | M�tricas guardadas en textfile: D:\Computadora Huawei\Acad�mico\CoderHouse\DataEngineering\proyecto-integrador-dataeng\output\metrics\ventas_pipeline.prom
+2026-07-05 21:00:38 | INFO    | ejecutar_pipeline | Salidas: {"parquet": "output/ingresos_por_producto_fecha.parquet", "csv": "output/ingresos_por_producto_fecha.csv"}
+2026-07-05 21:00:38 | INFO    | ejecutar_pipeline | === FIN pipeline en 0.039s (ingreso_total=342413.79) ===

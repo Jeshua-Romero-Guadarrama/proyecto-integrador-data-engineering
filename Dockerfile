@@ -19,4 +19,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Genera datos y ejecuta el pipeline por defecto.
-CMD ["sh", "-c", "python scripts/generate_data.py && python run_pipeline.py"]
+CMD ["sh", "-c", "python scripts/generar_datos.py && python ejecutar_pipeline.py"]

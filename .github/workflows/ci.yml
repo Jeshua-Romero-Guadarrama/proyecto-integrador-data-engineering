@@ -34,7 +34,7 @@ jobs:
         continue-on-error: true  # el lint informa pero no bloquea la entrega educativa
 
       - name: Generar dataset de ejemplo
-        run: python scripts/generate_data.py --rows 1000
+        run: python scripts/generar_datos.py --filas 1000
 
       - name: Ejecutar tests (pytest)
         env:
@@ -44,7 +44,7 @@ jobs:
       - name: Ejecutar pipeline end-to-end
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python run_pipeline.py
+        run: python ejecutar_pipeline.py
 
       - name: Validar transformaciones con dbt
         working-directory: dbt/ventas

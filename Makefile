@@ -18,10 +18,10 @@ install:
 	python -m pip install -r requirements.txt
 
 data:
-	python scripts/generate_data.py --rows 1000
+	python scripts/generar_datos.py --filas 1000
 
 run:
-	python run_pipeline.py
+	python ejecutar_pipeline.py
 
 test:
 	pytest
@@ -30,7 +30,7 @@ lint:
 	ruff check .
 
 spark:
-	python jobs/spark_job.py --input data/ventas.csv --output output/spark_parquet
+	python jobs/job_spark.py --entrada data/ventas.csv --salida output/spark_parquet
 
 dbt:
 	cd dbt/ventas && dbt build --profiles-dir .

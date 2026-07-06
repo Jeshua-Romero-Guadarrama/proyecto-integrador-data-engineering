@@ -1,14 +1,14 @@
-# TYPE ventas_pipeline_last_success_timestamp gauge
-ventas_pipeline_last_success_timestamp{job="ventas_pipeline"} 1783305498.3304126
-# TYPE ventas_pipeline_duration_seconds gauge
-ventas_pipeline_duration_seconds{job="ventas_pipeline"} 0.015
-# TYPE ventas_pipeline_rows_in gauge
-ventas_pipeline_rows_in{job="ventas_pipeline"} 1000
-# TYPE ventas_pipeline_rows_out gauge
-ventas_pipeline_rows_out{job="ventas_pipeline"} 426
+# TYPE ventas_pipeline_ultimo_exito_timestamp gauge
+ventas_pipeline_ultimo_exito_timestamp{job="ventas_pipeline"} 1783306839.1410887
+# TYPE ventas_pipeline_duracion_segundos gauge
+ventas_pipeline_duracion_segundos{job="ventas_pipeline"} 0.016
+# TYPE ventas_pipeline_filas_entrada gauge
+ventas_pipeline_filas_entrada{job="ventas_pipeline"} 1000
+# TYPE ventas_pipeline_filas_salida gauge
+ventas_pipeline_filas_salida{job="ventas_pipeline"} 426
 # TYPE ventas_pipeline_ingreso_total gauge
 ventas_pipeline_ingreso_total{job="ventas_pipeline"} 342413.79
-# TYPE ventas_pipeline_checks_passed gauge
-ventas_pipeline_checks_passed{job="ventas_pipeline"} 8
-# TYPE ventas_pipeline_checks_failed gauge
-ventas_pipeline_checks_failed{job="ventas_pipeline"} 0
+# TYPE ventas_pipeline_chequeos_ok gauge
+ventas_pipeline_chequeos_ok{job="ventas_pipeline"} 8
+# TYPE ventas_pipeline_chequeos_fallidos gauge
+ventas_pipeline_chequeos_fallidos{job="ventas_pipeline"} 0

@@ -2,6 +2,7 @@
 name = "proyecto-integrador-dataeng"
 version = "1.0.0"
 description = "Pipeline de datos end-to-end de ventas (Proyecto Integrador Data Engineering)"
+authors = [{ name = "Jeshua Romero Guadarrama", email = "jeshua.romero@gmail.com" }]
 requires-python = ">=3.10"
 
 [tool.pytest.ini_options]

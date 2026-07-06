@@ -1,11 +1,11 @@
-"""Paquete con las etapas del pipeline de ventas.
+"""Etapas del pipeline de ventas.
 
-Cada etapa es un módulo independiente y testeable:
-    - ingest    : lectura y validación estructural del CSV de entrada.
-    - transform : reglas de negocio (ingreso_total y agregación).
-    - validate  : reglas de calidad de datos.
-    - load      : persistencia del resultado (Parquet / CSV).
-    - common    : utilidades compartidas (config, logging).
-    - metrics   : instrumentación Prometheus.
-    - spark_job : implementación alternativa con PySpark (procesamiento distribuido).
+Separé cada etapa en su propio módulo para poder probarlas por separado:
+    - ingesta       : leer el CSV y chequear que tenga la forma esperada.
+    - transformacion: reglas de negocio (ingreso_total y agregado).
+    - validacion    : reglas de calidad de datos.
+    - carga         : guardar el resultado en Parquet / CSV.
+    - comunes       : cosas compartidas (config, logging).
+    - metricas      : métricas para Prometheus.
+    - job_spark     : la misma lógica pero con PySpark (procesamiento distribuido).
 """

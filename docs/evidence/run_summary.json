@@ -1,57 +1,57 @@
 {
-  "status": "success",
-  "duration_seconds": 0.015,
-  "rows_in": 1000,
-  "rows_out": 426,
+  "estado": "exito",
+  "duracion_segundos": 0.016,
+  "filas_entrada": 1000,
+  "filas_salida": 426,
   "ingreso_total": 342413.79,
-  "validation": {
+  "validacion": {
     "ok": true,
     "total": 8,
-    "passed": 8,
-    "checks": [
+    "aprobados": 8,
+    "chequeos": [
       {
-        "check": "columnas_requeridas",
-        "passed": true,
-        "detail": "todas presentes"
+        "chequeo": "columnas_requeridas",
+        "ok": true,
+        "detalle": "todas presentes"
       },
       {
-        "check": "min_filas",
-        "passed": true,
-        "detail": "filas=1000 (min=1)"
+        "chequeo": "min_filas",
+        "ok": true,
+        "detalle": "filas=1000 (min=1)"
       },
       {
-        "check": "no_nulos::fecha",
-        "passed": true,
-        "detail": "nulos=0"
+        "chequeo": "no_nulos::fecha",
+        "ok": true,
+        "detalle": "nulos=0"
       },
       {
-        "check": "no_nulos::producto_id",
-        "passed": true,
-        "detail": "nulos=0"
+        "chequeo": "no_nulos::producto_id",
+        "ok": true,
+        "detalle": "nulos=0"
       },
       {
-        "check": "no_nulos::cantidad",
-        "passed": true,
-        "detail": "nulos=0"
+        "chequeo": "no_nulos::cantidad",
+        "ok": true,
+        "detalle": "nulos=0"
       },
       {
-        "check": "no_nulos::precio_unitario",
-        "passed": true,
-        "detail": "nulos=0"
+        "chequeo": "no_nulos::precio_unitario",
+        "ok": true,
+        "detalle": "nulos=0"
       },
       {
-        "check": "positivos::cantidad",
-        "passed": true,
-        "detail": "<=0 => 0"
+        "chequeo": "positivos::cantidad",
+        "ok": true,
+        "detalle": "<=0 => 0"
       },
       {
-        "check": "positivos::precio_unitario",
-        "passed": true,
-        "detail": "<=0 => 0"
+        "chequeo": "positivos::precio_unitario",
+        "ok": true,
+        "detalle": "<=0 => 0"
       }
     ]
   },
-  "outputs": {
+  "salidas": {
     "parquet": "output/ingresos_por_producto_fecha.parquet",
     "csv": "output/ingresos_por_producto_fecha.csv"
   }

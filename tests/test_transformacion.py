@@ -3,20 +3,24 @@ from __future__ import annotations
 
 import datetime as dt
 
-from jobs.transform import add_ingreso_total, aggregate_por_producto_fecha, transform
+from jobs.transformacion import (
+    agregar_ingreso_total,
+    agrupar_por_producto_fecha,
+    transformar,
+)
 
 
 def test_ingreso_total_es_cantidad_por_precio(ventas_validas):
-    out = add_ingreso_total(ventas_validas)
-    assert "ingreso_total" in out.columns
+    salida = agregar_ingreso_total(ventas_validas)
+    assert "ingreso_total" in salida.columns
     # fila 0: 2 * 40 = 80
-    assert out.loc[0, "ingreso_total"] == 80.0
+    assert salida.loc[0, "ingreso_total"] == 80.0
     # fila 2: 1 * 25 = 25
-    assert out.loc[2, "ingreso_total"] == 25.0
+    assert salida.loc[2, "ingreso_total"] == 25.0
 
 
-def test_agregacion_suma_por_producto_y_fecha(ventas_validas):
-    resultado = transform(ventas_validas)
+def test_agregado_suma_por_producto_y_fecha(ventas_validas):
+    resultado = transformar(ventas_validas)
     # Combinaciones esperadas: (1/1,101), (1/1,102), (1/2,101) -> 3 filas
     assert len(resultado) == 3
 
@@ -29,17 +33,17 @@ def test_agregacion_suma_por_producto_y_fecha(ventas_validas):
     assert fila["unidades_vendidas"] == 5
 
 
-def test_ingreso_total_global_se_conserva(ventas_validas):
-    con_ingreso = add_ingreso_total(ventas_validas)
-    agregado = aggregate_por_producto_fecha(con_ingreso)
-    # La suma de ingreso no cambia al agregar (sólo se reorganiza).
+def test_el_ingreso_global_no_cambia_al_agrupar(ventas_validas):
+    con_ingreso = agregar_ingreso_total(ventas_validas)
+    agregado = agrupar_por_producto_fecha(con_ingreso)
+    # Agrupar solo reorganiza: la suma total del ingreso tiene que ser la misma.
     assert round(con_ingreso["ingreso_total"].sum(), 2) == round(
         agregado["ingreso_total"].sum(), 2
     )
 
 
 def test_columnas_de_salida(ventas_validas):
-    resultado = transform(ventas_validas)
+    resultado = transformar(ventas_validas)
     assert list(resultado.columns) == [
         "fecha",
         "producto_id",

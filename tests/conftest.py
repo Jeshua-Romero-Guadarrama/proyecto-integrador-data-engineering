@@ -1,4 +1,4 @@
-"""Fixtures compartidas para la suite de tests."""
+"""Fixtures que comparten los tests (datasets chiquitos armados a mano)."""
 from __future__ import annotations
 
 import datetime as dt
@@ -9,7 +9,7 @@ import pytest
 
 @pytest.fixture
 def ventas_validas() -> pd.DataFrame:
-    """Dataset pequeño y limpio con dos productos en dos fechas."""
+    """Un dataset limpio con dos productos en dos fechas."""
     return pd.DataFrame(
         {
             "fecha": [
@@ -27,7 +27,7 @@ def ventas_validas() -> pd.DataFrame:
 
 @pytest.fixture
 def ventas_con_negativos() -> pd.DataFrame:
-    """Dataset con una cantidad negativa (debe fallar la validación)."""
+    """Trae una cantidad negativa a propósito, para que falle la validación."""
     return pd.DataFrame(
         {
             "fecha": [dt.date(2023, 1, 1), dt.date(2023, 1, 2)],
@@ -40,7 +40,7 @@ def ventas_con_negativos() -> pd.DataFrame:
 
 @pytest.fixture
 def ventas_con_nulos() -> pd.DataFrame:
-    """Dataset con un precio nulo (debe fallar la validación)."""
+    """Trae un precio nulo a propósito, para que falle la validación."""
     return pd.DataFrame(
         {
             "fecha": [dt.date(2023, 1, 1), dt.date(2023, 1, 2)],
